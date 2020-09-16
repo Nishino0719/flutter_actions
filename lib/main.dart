@@ -6,6 +6,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_actions/noise.dart';
 import 'package:sensors/sensors.dart';
 
 void main() {
@@ -61,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final List<String> userAccelerometer = _userAccelerometerValues
         ?.map((double v) => v.toStringAsFixed(1))
         ?.toList();
-    if(_countup_accel < 50 ) {
+    if (_countup_accel < 50) {
       return Scaffold(
         appBar: AppBar(
           title: const Text('Sensor Example'),
@@ -106,14 +107,14 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       );
-    }else{
+    } else {
       return Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: (){
-
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => NoisePage()));
           },
           child: new Icon(Icons.favorite),
-
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         appBar: AppBar(
@@ -121,8 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-          ],
+          children: [],
         ),
       );
     }
@@ -143,25 +143,30 @@ class _MyHomePageState extends State<MyHomePage> {
         .add(accelerometerEvents.listen((AccelerometerEvent event) {
       if (event.x > _accelmaxX) {
         _accelmaxX = event.x;
-      }else if(event.y > _accelmaxY){
+      } else if (event.y > _accelmaxY) {
         _accelmaxY = event.y;
-      }else if(event.z > _accelmaxZ){
+      } else if (event.z > _accelmaxZ) {
         _accelmaxZ = event.z;
       }
 
-      if(event.x > 50){
+      if (event.x > 50) {
         _countup_accel++;
       }
       setState(() {
-        _accelerometerValues = <double>[_accelmaxX, _accelmaxY, _accelmaxZ,_countup_accel];
+        _accelerometerValues = <double>[
+          _accelmaxX,
+          _accelmaxY,
+          _accelmaxZ,
+          _countup_accel
+        ];
       });
     }));
     _streamSubscriptions.add(gyroscopeEvents.listen((GyroscopeEvent event) {
       if (event.x > _gyromaxX) {
         _gyromaxX = event.x;
-      }else if(event.y > _gyromaxY){
+      } else if (event.y > _gyromaxY) {
         _gyromaxY = event.y;
-      }else if(event.z > _gyromaxZ){
+      } else if (event.z > _gyromaxZ) {
         _gyromaxZ = event.z;
       }
       setState(() {
@@ -172,13 +177,17 @@ class _MyHomePageState extends State<MyHomePage> {
         .add(userAccelerometerEvents.listen((UserAccelerometerEvent event) {
       if (event.x > _useraccelmaxX) {
         _useraccelmaxX = event.x;
-      }else if(event.y > _useraccelmaxY){
+      } else if (event.y > _useraccelmaxY) {
         _useraccelmaxY = event.y;
-      }else if(event.z > _useraccelmaxZ){
+      } else if (event.z > _useraccelmaxZ) {
         _useraccelmaxZ = event.z;
       }
       setState(() {
-        _userAccelerometerValues = <double>[_useraccelmaxX, _useraccelmaxY, _useraccelmaxZ];
+        _userAccelerometerValues = <double>[
+          _useraccelmaxX,
+          _useraccelmaxY,
+          _useraccelmaxZ
+        ];
       });
     }));
   }
