@@ -2,6 +2,7 @@ import 'package:noise_meter/noise_meter.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math';
+double _noiseread;
 
 
 class NoisePage extends StatefulWidget {
@@ -25,6 +26,7 @@ class _NoisePageState extends State<NoisePage>{
         this._isRecording = true;
       }
     });
+    _noiseread = noiseReading.maxDecibel;
     print(noiseReading.toString());
   }
 
@@ -55,7 +57,7 @@ class _NoisePageState extends State<NoisePage>{
         margin: EdgeInsets.all(25),
         child: Column(children: [
           Container(
-            child: Text(_isRecording ? "Mic: ON" : "Mic: OFF",
+            child: Text(_isRecording ? _noiseread.toString() : "Mic: OFF",
                 style: TextStyle(fontSize: 25, color: Colors.blue)),
             margin: EdgeInsets.only(top: 20),
           )
