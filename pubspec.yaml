@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   sensors: ^0.4.2+4
+  noise_meter: ^1.2.0+1
 
 
   # The following adds the Cupertino Icons font to your application.
