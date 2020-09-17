@@ -2,6 +2,7 @@ import 'package:noise_meter/noise_meter.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math';
+import 'package:flutter_actions/mixture.dart';
 double _noiseread;
 double _maxDeci = 0;
 
@@ -14,11 +15,13 @@ class NoisePage extends StatefulWidget {
 
 class _NoisePageState extends State<NoisePage>{
   bool _isRecording = false;
+  bool _isButtonDisabled;
   StreamSubscription<NoiseReading> _noiseSubscription;
   NoiseMeter _noiseMeter = new NoiseMeter();
   @override
   void initState(){
     super.initState();
+    _isButtonDisabled = false;
   }
 
   void onData(NoiseReading noiseReading) {
@@ -29,6 +32,11 @@ class _NoisePageState extends State<NoisePage>{
     });
     if(_maxDeci < noiseReading.maxDecibel){
       _maxDeci = noiseReading.maxDecibel;
+      if(_maxDeci > 80){
+        setState(() {
+          _isButtonDisabled = true;
+        });
+      }
     }
     _noiseread = noiseReading.maxDecibel;
     print(noiseReading.toString());
@@ -68,6 +76,7 @@ class _NoisePageState extends State<NoisePage>{
           Container(
             child: Text(_isRecording ? "現在の過去最大デシベルは"+_maxDeci.toString() : ""),
           ),
+          _buildCounterButton(),
         ])),
   ];
   @override
@@ -84,5 +93,32 @@ class _NoisePageState extends State<NoisePage>{
             child: _isRecording ? Icon(Icons.stop) : Icon(Icons.mic)),
       ),
     );
+  }
+  Widget _buildCounterButton() {
+    return new RaisedButton(
+      child: new Text(
+          _isButtonDisabled ? "おめでとう、アクション成功だ" : "過去最大デシベルを80より大きくしてね"
+      ),
+      onPressed:  _toLastPage,
+    );
+  }
+  Function _toLastPage(){
+    if(_isButtonDisabled){
+      try {
+        if (_noiseSubscription != null) {
+          _noiseSubscription.cancel();
+          _noiseSubscription = null;
+        }
+        this.setState(() {
+          this._isRecording = false;
+        });
+      } catch (err) {
+        print('stopRecorder error: $err');
+      }
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MixturePage()));
+    }else{
+
+    }
   }
 }
