@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math';
 double _noiseread;
+double _maxDeci = 0;
 
 
 class NoisePage extends StatefulWidget {
@@ -26,6 +27,9 @@ class _NoisePageState extends State<NoisePage>{
         this._isRecording = true;
       }
     });
+    if(_maxDeci < noiseReading.maxDecibel){
+      _maxDeci = noiseReading.maxDecibel;
+    }
     _noiseread = noiseReading.maxDecibel;
     print(noiseReading.toString());
   }
@@ -60,7 +64,10 @@ class _NoisePageState extends State<NoisePage>{
             child: Text(_isRecording ? _noiseread.toString() : "Mic: OFF",
                 style: TextStyle(fontSize: 25, color: Colors.blue)),
             margin: EdgeInsets.only(top: 20),
-          )
+          ),
+          Container(
+            child: Text(_isRecording ? "現在の過去最大デシベルは"+_maxDeci.toString() : ""),
+          ),
         ])),
   ];
   @override
