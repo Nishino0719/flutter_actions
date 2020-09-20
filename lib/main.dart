@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final List<String> userAccelerometer = _userAccelerometerValues
         ?.map((double v) => v.toStringAsFixed(1))
         ?.toList();
-    if (_countup_accel < 50) {
+    if (_countup_accel < 20) {
       return Scaffold(
         appBar: AppBar(
           title: const Text('Sensor Example'),
