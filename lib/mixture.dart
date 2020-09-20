@@ -3,6 +3,7 @@ import 'package:sensors/sensors.dart';
 import 'package:noise_meter/noise_meter.dart';
 import 'dart:async';
 import 'package:flutter_actions/main.dart';
+import 'package:flutter_actions/bokashi.dart';
 
 double _noiseread;
 double _maxDeci = 0;
@@ -242,7 +243,7 @@ class _MixturePageState extends State<MixturePage> {
         print('stopRecorder error: $err');
       }
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MyApp()));
+          context, MaterialPageRoute(builder: (context) => BokashiPage()));
     } else {}
   }
 
