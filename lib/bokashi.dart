@@ -2,8 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-
-class BokashiPage extends StatelessWidget{
+class BokashiPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -17,17 +16,13 @@ class BokashiPage extends StatelessWidget{
         ),
         body: new Stack(
           children: <Widget>[
-            Text(
-              'Hello World',
-              style: TextStyle(
-                fontSize: 100,
-              ),
-            ),
-            new ClipRect(
-              child: new BackdropFilter(
-                filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            Image.network(
+                "https://avatars0.githubusercontent.com/u/55534054?s=460&u=402783902455ae84995129488dd3a12d0699fd84&v=4"),
+            Positioned.fill(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                 child: Container(
-                  color: const Color(0).withOpacity(0),
+                  color: Colors.black.withOpacity(0),
                 ),
               ),
             ),
