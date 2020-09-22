@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sensors/sensors.dart';
 import 'package:noise_meter/noise_meter.dart';
 import 'dart:async';
-import 'package:flutter_actions/main.dart';
 import 'package:flutter_actions/bokashi.dart';
 
 double _noiseread;

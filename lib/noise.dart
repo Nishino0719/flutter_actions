@@ -1,8 +1,8 @@
 import 'package:noise_meter/noise_meter.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter_actions/mixture.dart';
+import 'package:vibrate/vibrate.dart';
 double _noiseread;
 double _maxDeci = 0;
 
@@ -18,10 +18,26 @@ class _NoisePageState extends State<NoisePage>{
   bool _isButtonDisabled;
   StreamSubscription<NoiseReading> _noiseSubscription;
   NoiseMeter _noiseMeter = new NoiseMeter();
+  bool _canVibrate = true;
+  final Iterable<Duration> pauses = [
+    const Duration(milliseconds: 500),
+    const Duration(milliseconds: 1000),
+    const Duration(milliseconds: 500),
+  ];
   @override
   void initState(){
     super.initState();
     _isButtonDisabled = false;
+  }
+  init() async {
+    bool canVibrate = await Vibrate.canVibrate;
+    setState(() {
+      _canVibrate = canVibrate;
+      _canVibrate
+          ? print("This device can vibrate")
+          : print("This device cannot vibrate");
+    });
+    Vibrate.vibrate();
   }
 
   void onData(NoiseReading noiseReading) {
@@ -33,9 +49,12 @@ class _NoisePageState extends State<NoisePage>{
     if(_maxDeci < noiseReading.maxDecibel){
       _maxDeci = noiseReading.maxDecibel;
       if(_maxDeci > 80){
+
         setState(() {
           _isButtonDisabled = true;
+          // _canVibrate = true;
         });
+        Vibrate.feedback(FeedbackType.impact);
       }
     }
     _noiseread = noiseReading.maxDecibel;
@@ -77,6 +96,7 @@ class _NoisePageState extends State<NoisePage>{
             child: Text(_isRecording ? "現在の過去最大デシベルは"+_maxDeci.toString() : ""),
           ),
           _buildCounterButton(),
+
         ])),
   ];
   @override
